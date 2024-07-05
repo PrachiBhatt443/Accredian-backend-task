@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Referral {
+  id             Int    @id @default(autoincrement())
+  referrerName    String
+  referrerEmail   String
+  refereeName     String
+  refereeEmail    String
+  createdAt       DateTime @default(now())
+  status          String  @default("pending")
+  purchaseAmount Int?    // Add this line
+}
+
+
+
+model Purchase {
+  id           Int    @id @default(autoincrement())
+  referrerId   Int
+  refereeId    Int
+  courseId     Int
+  createdAt    DateTime @default(now())
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  bonus    Int    @default(0)
+}
+
