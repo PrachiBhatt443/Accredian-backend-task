@@ -1,12 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "mysql" // Ensure the provider is set to MySQL
+  url      = env("DATABASE_URL") // Fetch the connection URL from the environment variable
 }
 
 generator client {
@@ -21,10 +15,8 @@ model Referral {
   refereeEmail    String
   createdAt       DateTime @default(now())
   status          String  @default("pending")
-  purchaseAmount Int?    // Add this line
+  purchaseAmount Int?
 }
-
-
 
 model Purchase {
   id           Int    @id @default(autoincrement())
@@ -32,12 +24,16 @@ model Purchase {
   refereeId    Int
   courseId     Int
   createdAt    DateTime @default(now())
+  
+  referrer     User   @relation("Referrer", fields: [referrerId], references: [id])
+  referee      User   @relation("Referee", fields: [refereeId], references: [id])
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  bonus    Int    @default(0)
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  password     String
+  bonus        Int        @default(0)
+  referredBy   Purchase[] @relation("Referrer")
+  referredTo   Purchase[] @relation("Referee")
 }
-
