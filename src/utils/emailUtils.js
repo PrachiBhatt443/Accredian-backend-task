@@ -13,7 +13,7 @@ const sendReferralEmail = async (referrerName, referrerEmail, refereeName, refer
     from: process.env.EMAIL_USER,
     to: refereeEmail,
     subject: 'You have been referred!',
-    text: `${referrerName} has referred you to our platform. Click the link below to check out our courses: \n\nhttp://localhost:3000`,
+    text: `${referrerName} has referred you to our platform. Click the link below to check out our courses: \n\nhttps://accredian-frontend-task-chi.vercel.app/`,
   };
 
   await transporter.sendMail(mailOptions);
